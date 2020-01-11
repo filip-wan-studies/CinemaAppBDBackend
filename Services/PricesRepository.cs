@@ -7,18 +7,18 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Services
 {
-    public class FilmsRepository : IFilmsRepository
+    public class PricesRepository : IPricesRepository
     {
         private readonly bazdanContext _context;
 
-        public FilmsRepository(bazdanContext context)
+        public PricesRepository(bazdanContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Object> GetFilms()
+        public IEnumerable<Prices> GetPrices()
         {
-            return (from p in _context.Films join g in _context.Genres on p.IdGenre equals g.IdGenre select new { Title = p.Title, Genre = g.Name, Screenings = p.Screenings }).ToList();
+            return _context.Prices.ToList();
         }
     }
 }
