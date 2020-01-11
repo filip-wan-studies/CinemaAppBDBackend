@@ -12,19 +12,19 @@ namespace CinemaAppBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FilmsController : ControllerBase
+    public class FilmController : ControllerBase
     {
-        private readonly IFilmRepository _filmRepository;
+        private readonly IFilmRepository _repository;
 
-        public FilmsController(IFilmRepository filmRepository)
+        public FilmController(IFilmRepository repository)
         {
-            _filmRepository = filmRepository;
+            _repository = repository;
         }
 
         [HttpGet]
         public IEnumerable<Object> Get()
         {
-            return _filmRepository.GetFilms();
+            return _repository.GetFilms();
         }
     }
 }
