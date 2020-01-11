@@ -6,7 +6,7 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Interfaces
 {
-    interface IPriceRepository
+    public interface IPriceRepository
     {
         IEnumerable<Price> GetPrices();
     }
