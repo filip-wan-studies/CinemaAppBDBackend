@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CinemaAppBackend.Interfaces;
+using CinemaAppBackend.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,7 @@ namespace CinemaAppBackend.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Object> Get()
+        public IEnumerable<Price> Get()
         {
             return _repository.GetPrices();
         }

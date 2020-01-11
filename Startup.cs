@@ -32,6 +32,7 @@ namespace CinemaAppBackend
             services.AddControllers();
             services.AddDbContext<bazdanContext>(opts => opts.UseMySql(Configuration["ConnectionStrings:CinemaAppDatabase"]));
             services.AddScoped<IFilmRepository, FilmRepository>();
+            services.AddScoped<IPriceRepository, PriceRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
