@@ -6,9 +6,8 @@ using CinemaAppBackend.Models;
 
 namespace CinemaAppBackend.Interfaces
 {
-    interface IScreeningsRepository
+    public interface IFilmRepository
     {
-        IEnumerable<Screenings> GetScreenings();
-        Screenings GetScreening(int id);
+        IEnumerable<Object> GetFilms();
     }
 }

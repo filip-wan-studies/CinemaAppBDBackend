@@ -7,7 +7,7 @@ namespace CinemaAppBackend.Models
     {
         public Client()
         {
-            Reservations = new HashSet<Reservations>();
+            Reservations = new HashSet<Reservation>();
         }
 
         public uint IdClient { get; set; }
@@ -16,6 +16,6 @@ namespace CinemaAppBackend.Models
         public decimal? PhoneNumber { get; set; }
         public string Email { get; set; }
 
-        public virtual ICollection<Reservations> Reservations { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace CinemaAppBackend.Models
 {
-    public partial class Screenings
+    public partial class Screening
     {
-        public Screenings()
+        public Screening()
         {
-            Tickets = new HashSet<Tickets>();
+            Tickets = new HashSet<Ticket>();
         }
 
         public uint IdScreening { get; set; }
@@ -15,8 +15,8 @@ namespace CinemaAppBackend.Models
         public byte IdPrice { get; set; }
         public DateTime DateScreening { get; set; }
 
-        public virtual Films IdFilmNavigation { get; set; }
-        public virtual Prices IdPriceNavigation { get; set; }
-        public virtual ICollection<Tickets> Tickets { get; set; }
+        public virtual Film FilmNavigation { get; set; }
+        public virtual Price PriceNavigation { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

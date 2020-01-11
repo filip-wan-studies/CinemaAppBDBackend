@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace CinemaAppBackend.Models
 {
-    public partial class Rooms
+    public partial class Room
     {
-        public Rooms()
+        public Room()
         {
-            Tickets = new HashSet<Tickets>();
+            Tickets = new HashSet<Ticket>();
         }
 
         public byte IdRoom { get; set; }
         public string Name { get; set; }
         public short SeatCount { get; set; }
 
-        public virtual ICollection<Tickets> Tickets { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

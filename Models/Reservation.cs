@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CinemaAppBackend.Models
 {
-    public partial class Reservations
+    public partial class Reservation
     {
         public uint IdReservation { get; set; }
         public uint IdTicket { get; set; }

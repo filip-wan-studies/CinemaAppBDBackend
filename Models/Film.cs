@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace CinemaAppBackend.Models
 {
-    public partial class Films
+    public partial class Film
     {
-        public Films()
+        public Film()
         {
-            Screenings = new HashSet<Screenings>();
+            Screenings = new HashSet<Screening>();
         }
 
         public uint IdFilm { get; set; }
         public string Title { get; set; }
         public ushort IdGenre { get; set; }
 
-        public virtual Genres IdGenreNavigation { get; set; }
-        public virtual ICollection<Screenings> Screenings { get; set; }
+        public virtual Genre GenreNavigation { get; set; }
+        public virtual ICollection<Screening> Screenings { get; set; }
     }
 }

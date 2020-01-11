@@ -14,17 +14,17 @@ namespace CinemaAppBackend.Controllers
     [ApiController]
     public class FilmsController : ControllerBase
     {
-        private readonly IFilmsRepository _filmsRepository;
+        private readonly IFilmRepository _filmRepository;
 
-        public FilmsController(IFilmsRepository filmsRepository)
+        public FilmsController(IFilmRepository filmRepository)
         {
-            _filmsRepository = filmsRepository;
+            _filmRepository = filmRepository;
         }
 
         [HttpGet]
         public IEnumerable<Object> Get()
         {
-            return _filmsRepository.GetFilms();
+            return _filmRepository.GetFilms();
         }
     }
 }

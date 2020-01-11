@@ -16,22 +16,22 @@ namespace CinemaAppBackend.Models
         {
         }
 
-        public virtual DbSet<Admins> Admins { get; set; }
-        public virtual DbSet<Client> Client { get; set; }
-        public virtual DbSet<Discounts> Discounts { get; set; }
-        public virtual DbSet<Employees> Employees { get; set; }
-        public virtual DbSet<Films> Films { get; set; }
-        public virtual DbSet<Genres> Genres { get; set; }
-        public virtual DbSet<Prices> Prices { get; set; }
-        public virtual DbSet<Reservations> Reservations { get; set; }
-        public virtual DbSet<Rooms> Rooms { get; set; }
-        public virtual DbSet<Screenings> Screenings { get; set; }
-        public virtual DbSet<Tickets> Tickets { get; set; }
+        public virtual DbSet<Admin> Admins { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Discount> Discounts { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Film> Films { get; set; }
+        public virtual DbSet<Genre> Genres { get; set; }
+        public virtual DbSet<Price> Prices { get; set; }
+        public virtual DbSet<Reservation> Reservations { get; set; }
+        public virtual DbSet<Room> Rooms { get; set; }
+        public virtual DbSet<Screening> Screenings { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Admins>(entity =>
+            modelBuilder.Entity<Admin>(entity =>
             {
                 entity.HasKey(e => e.IdAdmin)
                     .HasName("PRIMARY");
@@ -109,7 +109,7 @@ namespace CinemaAppBackend.Models
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
 
-            modelBuilder.Entity<Discounts>(entity =>
+            modelBuilder.Entity<Discount>(entity =>
             {
                 entity.HasKey(e => e.IdDiscount)
                     .HasName("PRIMARY");
@@ -133,7 +133,7 @@ namespace CinemaAppBackend.Models
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
 
-            modelBuilder.Entity<Employees>(entity =>
+            modelBuilder.Entity<Employee>(entity =>
             {
                 entity.HasKey(e => e.IdEmployee)
                     .HasName("PRIMARY");
@@ -174,7 +174,7 @@ namespace CinemaAppBackend.Models
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
 
-            modelBuilder.Entity<Films>(entity =>
+            modelBuilder.Entity<Film>(entity =>
             {
                 entity.HasKey(e => e.IdFilm)
                     .HasName("PRIMARY");
@@ -199,14 +199,14 @@ namespace CinemaAppBackend.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
-                entity.HasOne(d => d.IdGenreNavigation)
+                entity.HasOne(d => d.GenreNavigation)
                     .WithMany(p => p.Films)
                     .HasForeignKey(d => d.IdGenre)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("films_ibfk_1");
             });
 
-            modelBuilder.Entity<Genres>(entity =>
+            modelBuilder.Entity<Genre>(entity =>
             {
                 entity.HasKey(e => e.IdGenre)
                     .HasName("PRIMARY");
@@ -225,7 +225,7 @@ namespace CinemaAppBackend.Models
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
 
-            modelBuilder.Entity<Prices>(entity =>
+            modelBuilder.Entity<Price>(entity =>
             {
                 entity.HasKey(e => e.IdPrice)
                     .HasName("PRIMARY");
@@ -249,7 +249,7 @@ namespace CinemaAppBackend.Models
                     .HasCollation("utf8mb4_0900_ai_ci");
             });
 
-            modelBuilder.Entity<Reservations>(entity =>
+            modelBuilder.Entity<Reservation>(entity =>
             {
                 entity.HasKey(e => e.IdReservation)
                     .HasName("PRIMARY");
@@ -286,7 +286,7 @@ namespace CinemaAppBackend.Models
                     .HasConstraintName("reservations_ibfk_1");
             });
 
-            modelBuilder.Entity<Rooms>(entity =>
+            modelBuilder.Entity<Room>(entity =>
             {
                 entity.HasKey(e => e.IdRoom)
                     .HasName("PRIMARY");
@@ -308,7 +308,7 @@ namespace CinemaAppBackend.Models
                     .HasColumnType("smallint(6)");
             });
 
-            modelBuilder.Entity<Screenings>(entity =>
+            modelBuilder.Entity<Screening>(entity =>
             {
                 entity.HasKey(e => e.IdScreening)
                     .HasName("PRIMARY");
@@ -337,20 +337,20 @@ namespace CinemaAppBackend.Models
                     .HasColumnName("id_price")
                     .HasColumnType("tinyint(3) unsigned");
 
-                entity.HasOne(d => d.IdFilmNavigation)
+                entity.HasOne(d => d.FilmNavigation)
                     .WithMany(p => p.Screenings)
                     .HasForeignKey(d => d.IdFilm)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("screenings_ibfk_1");
 
-                entity.HasOne(d => d.IdPriceNavigation)
+                entity.HasOne(d => d.PriceNavigation)
                     .WithMany(p => p.Screenings)
                     .HasForeignKey(d => d.IdPrice)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("screenings_ibfk_2");
             });
 
-            modelBuilder.Entity<Tickets>(entity =>
+            modelBuilder.Entity<Ticket>(entity =>
             {
                 entity.HasKey(e => e.IdTicket)
                     .HasName("PRIMARY");
@@ -400,31 +400,31 @@ namespace CinemaAppBackend.Models
                     .HasColumnName("seat_number")
                     .HasColumnType("tinyint(4)");
 
-                entity.HasOne(d => d.IdDiscountNavigation)
+                entity.HasOne(d => d.DiscountNavigation)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.IdDiscount)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tickets_ibfk_3");
 
-                entity.HasOne(d => d.IdEmployeeNavigation)
+                entity.HasOne(d => d.EmployeeNavigation)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.IdEmployee)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tickets_ibfk_4");
 
-                entity.HasOne(d => d.IdPriceNavigation)
+                entity.HasOne(d => d.PriceNavigation)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.IdPrice)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tickets_ibfk_2");
 
-                entity.HasOne(d => d.IdRoomNavigation)
+                entity.HasOne(d => d.RoomNavigation)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.IdRoom)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tickets_ibfk_1");
 
-                entity.HasOne(d => d.IdScreeningNavigation)
+                entity.HasOne(d => d.ScreeningNavigation)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.IdScreening)
                     .OnDelete(DeleteBehavior.ClientSetNull)

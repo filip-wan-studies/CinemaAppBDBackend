@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CinemaAppBackend.Models
 {
-    public partial class Tickets
+    public partial class Ticket
     {
         public uint IdTicket { get; set; }
         public sbyte SeatNumber { get; set; }
@@ -13,10 +13,10 @@ namespace CinemaAppBackend.Models
         public ushort IdEmployee { get; set; }
         public uint IdScreening { get; set; }
 
-        public virtual Discounts IdDiscountNavigation { get; set; }
-        public virtual Employees IdEmployeeNavigation { get; set; }
-        public virtual Prices IdPriceNavigation { get; set; }
-        public virtual Rooms IdRoomNavigation { get; set; }
-        public virtual Screenings IdScreeningNavigation { get; set; }
+        public virtual Discount DiscountNavigation { get; set; }
+        public virtual Employee EmployeeNavigation { get; set; }
+        public virtual Price PriceNavigation { get; set; }
+        public virtual Room RoomNavigation { get; set; }
+        public virtual Screening ScreeningNavigation { get; set; }
     }
 }
