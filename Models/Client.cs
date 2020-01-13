@@ -15,6 +15,7 @@ namespace CinemaAppBackend.Models
         public string Surname { get; set; }
         public decimal? PhoneNumber { get; set; }
         public string Email { get; set; }
+        public string Secret { get; set; }
 
         public virtual ICollection<Reservation> Reservations { get; set; }
     }

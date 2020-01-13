@@ -9,8 +9,10 @@ namespace CinemaAppBackend.Models
         public uint IdTicket { get; set; }
         public DateTime? DateIssued { get; set; }
         public DateTime DateSubmission { get; set; }
-        public uint IdClient { get; set; }
+        public uint? IdClient { get; set; }
+        public string Email { get; set; }
 
-        public virtual Client IdClientNavigation { get; set; }
+        public virtual Client ClientNavigation { get; set; }
+        public virtual Ticket TicketNavigation { get; set; }
     }
 }

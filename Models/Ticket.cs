@@ -5,6 +5,11 @@ namespace CinemaAppBackend.Models
 {
     public partial class Ticket
     {
+        public Ticket()
+        {
+            Reservations = new HashSet<Reservation>();
+        }
+
         public uint IdTicket { get; set; }
         public sbyte SeatNumber { get; set; }
         public byte IdRoom { get; set; }
@@ -18,5 +23,6 @@ namespace CinemaAppBackend.Models
         public virtual Price PriceNavigation { get; set; }
         public virtual Room RoomNavigation { get; set; }
         public virtual Screening ScreeningNavigation { get; set; }
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

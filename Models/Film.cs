@@ -13,6 +13,7 @@ namespace CinemaAppBackend.Models
         public uint IdFilm { get; set; }
         public string Title { get; set; }
         public ushort IdGenre { get; set; }
+        public string IdImbd { get; set; }
 
         public virtual Genre GenreNavigation { get; set; }
         public virtual ICollection<Screening> Screenings { get; set; }

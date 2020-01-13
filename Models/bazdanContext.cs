@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -27,7 +26,6 @@ namespace CinemaAppBackend.Models
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<Screening> Screenings { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -77,14 +75,13 @@ namespace CinemaAppBackend.Models
                 entity.HasKey(e => e.IdClient)
                     .HasName("PRIMARY");
 
-                entity.ToTable("client");
+                entity.ToTable("clients");
 
                 entity.Property(e => e.IdClient)
                     .HasColumnName("id_client")
                     .HasColumnType("mediumint(8) unsigned");
 
                 entity.Property(e => e.Email)
-                    .IsRequired()
                     .HasColumnName("email")
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
@@ -100,6 +97,13 @@ namespace CinemaAppBackend.Models
                 entity.Property(e => e.PhoneNumber)
                     .HasColumnName("phone_number")
                     .HasColumnType("decimal(11,0)");
+
+                entity.Property(e => e.Secret)
+                    .IsRequired()
+                    .HasColumnName("secret")
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Surname)
                     .IsRequired()
@@ -166,6 +170,13 @@ namespace CinemaAppBackend.Models
                     .HasColumnName("salary")
                     .HasColumnType("mediumint(9)");
 
+                entity.Property(e => e.Secret)
+                    .IsRequired()
+                    .HasColumnName("secret")
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.Surname)
                     .IsRequired()
                     .HasColumnName("surname")
@@ -184,6 +195,10 @@ namespace CinemaAppBackend.Models
                 entity.HasIndex(e => e.IdGenre)
                     .HasName("id_genre");
 
+                entity.HasIndex(e => e.IdImbd)
+                    .HasName("id_imbd")
+                    .IsUnique();
+
                 entity.Property(e => e.IdFilm)
                     .HasColumnName("id_film")
                     .HasColumnType("int(10) unsigned");
@@ -191,6 +206,12 @@ namespace CinemaAppBackend.Models
                 entity.Property(e => e.IdGenre)
                     .HasColumnName("id_genre")
                     .HasColumnType("smallint(5) unsigned");
+
+                entity.Property(e => e.IdImbd)
+                    .HasColumnName("id_imbd")
+                    .HasColumnType("varchar(100)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Title)
                     .IsRequired()
@@ -259,6 +280,9 @@ namespace CinemaAppBackend.Models
                 entity.HasIndex(e => e.IdClient)
                     .HasName("id_client");
 
+                entity.HasIndex(e => e.IdTicket)
+                    .HasName("id_ticket");
+
                 entity.Property(e => e.IdReservation)
                     .HasColumnName("id_reservation")
                     .HasColumnType("int(10) unsigned");
@@ -271,6 +295,12 @@ namespace CinemaAppBackend.Models
                     .HasColumnName("date_submission")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Email)
+                    .HasColumnName("email")
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
+
                 entity.Property(e => e.IdClient)
                     .HasColumnName("id_client")
                     .HasColumnType("mediumint(8) unsigned");
@@ -279,11 +309,16 @@ namespace CinemaAppBackend.Models
                     .HasColumnName("id_ticket")
                     .HasColumnType("int(10) unsigned");
 
-                entity.HasOne(d => d.IdClientNavigation)
+                entity.HasOne(d => d.ClientNavigation)
                     .WithMany(p => p.Reservations)
                     .HasForeignKey(d => d.IdClient)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("reservations_ibfk_1");
+
+                entity.HasOne(d => d.TicketNavigation)
+                    .WithMany(p => p.Reservations)
+                    .HasForeignKey(d => d.IdTicket)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("reservations_ibfk_2");
             });
 
             modelBuilder.Entity<Room>(entity =>
