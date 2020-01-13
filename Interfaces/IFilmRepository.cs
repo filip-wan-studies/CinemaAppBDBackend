@@ -8,6 +8,7 @@ namespace CinemaAppBackend.Interfaces
 {
     public interface IFilmRepository
     {
-        IEnumerable<Object> GetFilms();
+        IEnumerable<Film> GetFilms();
+        Film GetFilm(int id);
     }
 }

@@ -22,9 +22,15 @@ namespace CinemaAppBackend.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Object> Get()
+        public IEnumerable<Film> Get()
         {
             return _repository.GetFilms();
+        }
+
+        [HttpGet("{id}")]
+        public Film GetById([FromRoute] int id)
+        {
+            return _repository.GetFilm(id);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CinemaAppBackend.Interfaces;
 using CinemaAppBackend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaAppBackend.Services
 {
@@ -16,9 +17,21 @@ namespace CinemaAppBackend.Services
             _context = context;
         }
 
-        public IEnumerable<Object> GetFilms()
+        public IEnumerable<Film> GetFilms()
         {
-            return (from p in _context.Films join g in _context.Genres on p.IdGenre equals g.IdGenre select new { Title = p.Title, Genre = g.Name, Screenings = p.Screenings }).ToList();
+            return (
+                    from f in _context.Films join g in _context.Genres on f.IdGenre equals g.IdGenre 
+                    select new Film { GenreNavigation = g, IdFilm = f.IdFilm, IdGenre = f.IdGenre, IdImbd = f.IdImbd, Screenings = f.Screenings, Title = f.Title }
+                ).ToList();
+        }
+
+        public Film GetFilm(int id)
+        {
+            return (
+                    from f in _context.Films join g in _context.Genres on f.IdGenre equals g.IdGenre 
+                    where f.IdFilm == id 
+                    select new Film{GenreNavigation = g, IdFilm = f.IdFilm, IdGenre = f.IdGenre, IdImbd = f.IdImbd, Screenings = f.Screenings, Title = f.Title}
+                ).FirstOrDefault();
         }
     }
 }
