@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS Employees(id_employee smallint unsigned not null auto
 CREATE TABLE IF NOT EXISTS Films (id_film int unsigned not null auto_increment, title varchar(200) not null, id_genre smallint unsigned not null, id_imbd varchar(100) unique, constraint primary key(id_film), constraint foreign key(id_genre) references Genres(id_genre));
 CREATE TABLE IF NOT EXISTS Screenings(id_screening int unsigned not null auto_increment, id_film int unsigned not null, id_price tinyint unsigned not null, date_screening datetime not null, constraint primary key(id_screening), constraint foreign key(id_film) references Films(id_film), constraint foreign key(id_price) references Prices(id_price));
 CREATE TABLE IF NOT EXISTS Tickets (id_ticket int unsigned not null auto_increment, seat_number tinyint not null, id_room tinyint unsigned not null, id_price tinyint unsigned not null, id_discount  tinyint unsigned not null, id_employee smallint unsigned not null, id_screening int unsigned not null, constraint primary key(id_ticket), constraint foreign key(id_room) references Rooms(id_room), constraint foreign key(id_price) references Prices(id_price), constraint foreign key(id_discount) references Discounts(id_discount), constraint foreign key(id_employee) references Employees(id_employee), constraint foreign key(id_screening) references Screenings(id_screening));
-CREATE TABLE IF NOT EXISTS Client (id_client mediumint unsigned not null auto_increment, name varchar(40) not null, surname varchar(40) not null, phone_number decimal(11,0), email varchar(50), secret varchar(50) not null, constraint primary key(id_client));
-CREATE TABLE IF NOT EXISTS Reservations(id_reservation int unsigned not null auto_increment, id_ticket int unsigned not null, date_issued datetime, date_submission datetime not null, id_client mediumint unsigned, email varchar(50), constraint primary key(id_reservation), constraint foreign key(id_client) references Client(id_client), constraint foreign key(id_ticket) references Tickets(id_ticket), constraint check (date_issued>date_submission));
+CREATE TABLE IF NOT EXISTS Clients (id_client mediumint unsigned not null auto_increment, name varchar(40) not null, surname varchar(40) not null, phone_number decimal(11,0), email varchar(50), secret varchar(50) not null, constraint primary key(id_client));
+CREATE TABLE IF NOT EXISTS Reservations(id_reservation int unsigned not null auto_increment, id_ticket int unsigned not null, date_issued datetime, date_submission datetime not null, id_client mediumint unsigned, email varchar(50), constraint primary key(id_reservation), constraint foreign key(id_client) references Clients(id_client), constraint foreign key(id_ticket) references Tickets(id_ticket), constraint check (date_issued>date_submission));
 CREATE TABLE IF NOT EXISTS Admins(id_admin smallint unsigned not null auto_increment, name varchar(40) not null, surname varchar(40) not null, phone_number decimal(11,0), email varchar(50) not null, salary mediumint not null check(salary>0), constraint primary key(id_admin));
 
 /*Dodanie danych*/
@@ -67,7 +67,7 @@ LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/seans.csv' INTO 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/bilet.csv' INTO TABLE Tickets FIELDS TERMINATED BY ';';
 
 # Klienci
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/klienci.csv' INTO TABLE Client FIELDS TERMINATED BY ';';
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/klienci.csv' INTO TABLE Clients FIELDS TERMINATED BY ';';
 
 # Reservations
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/rezerwacje.csv' INTO TABLE Reservations FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n'
