@@ -23,7 +23,7 @@ INSERT INTO Discounts (id_discount, name, ammount) VALUES (null, 'Seniorska', 60
 INSERT INTO Discounts (id_discount, name, ammount) VALUES (null, 'Grupowa', 40);
 
 # Gatunki filmów
-INSERT INTO Genres (id_genre, name) VALUES (null, 'SC-FI');
+INSERT INTO Genres (id_genre, name) VALUES (null, 'Sci-Fi');
 INSERT INTO Genres (id_genre, name) VALUES (null, 'Akcja');
 INSERT INTO Genres (id_genre, name) VALUES (null, 'Horror');
 INSERT INTO Genres (id_genre, name) VALUES (null, 'Dramat');
@@ -32,6 +32,14 @@ INSERT INTO Genres (id_genre, name) VALUES (null, 'Dokumentarny');
 INSERT INTO Genres (id_genre, name) VALUES (null, 'Biograficzny');
 INSERT INTO Genres (id_genre, name) VALUES (null, 'Komedia');
 INSERT INTO Genres (id_genre, name) VALUES (null, 'Romantyczny');
+INSERT INTO Genres (id_genre, name) VALUES (null, 'Animowany');
+INSERT INTO Genres (id_genre, name) VALUES (null, 'Przygodowy');
+INSERT INTO Genres (id_genre, name) VALUES (null, 'Kryminał');
+INSERT INTO Genres (id_genre, name) VALUES (null, 'Thriller');
+INSERT INTO Genres (id_genre, name) VALUES (null, 'Rodzinny');
+INSERT INTO Genres (id_genre, name) VALUES (null, 'Musical');
+INSERT INTO Genres (id_genre, name) VALUES (null, 'Western');
+INSERT INTO Genres (id_genre, name) VALUES (null, 'Fantastyka');
 INSERT INTO Genres (id_genre, name) VALUES (null, 'N/A');
 
 # Ceny
