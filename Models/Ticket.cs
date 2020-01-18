@@ -10,12 +10,12 @@ namespace CinemaAppBackend.Models
             Reservations = new HashSet<Reservation>();
         }
 
-        public uint Id { get; set; }
+        public int Id { get; set; }
         public DateTime? IssuedDate { get; set; }
-        public ushort SeatId { get; set; }
-        public byte? DiscountId { get; set; }
-        public ushort? EmployeeId { get; set; }
-        public uint ScreeningId { get; set; }
+        public int SeatId { get; set; }
+        public int? DiscountId { get; set; }
+        public int? EmployeeId { get; set; }
+        public int ScreeningId { get; set; }
 
         public virtual Discount Discount { get; set; }
         public virtual Employee Employee { get; set; }

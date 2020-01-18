@@ -11,9 +11,9 @@ namespace CinemaAppBackend.Models
             Seats = new HashSet<Seat>();
         }
 
-        public byte Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public short SeatCount { get; set; }
+        public int SeatCount { get; set; }
 
         public virtual ICollection<Screening> Screenings { get; set; }
         public virtual ICollection<Seat> Seats { get; set; }

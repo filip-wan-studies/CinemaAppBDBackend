@@ -5,7 +5,7 @@ namespace CinemaAppBackend.Models
 {
     public partial class Admin
     {
-        public ushort Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public decimal? PhoneNumber { get; set; }
