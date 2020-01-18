@@ -12,7 +12,7 @@ namespace CinemaAppBackend.Interfaces
 
         List<Reservation> GetReservationsByEmail(string email);
 
-        Reservation PostReservation(string email);
+        Reservation PostReservation(string email, uint screeningId, ushort seatId);
 
         Reservation PutReservation(int id);
     }

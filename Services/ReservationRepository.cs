@@ -28,10 +28,10 @@ namespace CinemaAppBackend.Services
             return _context.Reservations.Where(r => r.Email == email).ToList();
         }
 
-        public Reservation PostReservation(string email)
+        public Reservation PostReservation(string email, uint screeningId, ushort seatId)
         {
-            var t = new Ticket {};
-            var reservation = new Reservation {Email = email, SubmissionDate = DateTime.Now};
+            var ticket = new Ticket{ScreeningId = screeningId, SeatId = seatId};
+            var reservation = new Reservation {Email = email, SubmissionDate = DateTime.Now, Ticket = ticket};
             return _context.Reservations.Add(reservation).Entity;
         }
 
