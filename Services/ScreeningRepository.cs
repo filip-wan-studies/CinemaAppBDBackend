@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CinemaAppBackend.Interfaces;
 using CinemaAppBackend.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 
 namespace CinemaAppBackend.Services
 {
@@ -18,12 +20,25 @@ namespace CinemaAppBackend.Services
 
         public IEnumerable<Screening> GetScreenings()
         {
-            return _context.Screenings.ToList();
+            var screenings = _context.Screenings.AsNoTracking().Include("Film").ToList();
+            screenings.ForEach(s => s.Film.Screenings = null);
+            return screenings;
         }
 
         public Screening GetScreening(int id)
         {
-            return _context.Screenings.First(s => s.Id == id);
+            var screening = _context.Screenings.AsNoTracking().Include("Film").Include("Room.Seats").Include("Price").First(s => s.Id == id);
+            screening.Film.Screenings = null;
+            screening.Room.Screenings = null;
+            var seats = screening.Room.Seats.ToList();
+            seats.ForEach(s =>
+            {
+                s.Tickets = null;
+                s.Room = null;
+            });
+            screening.Room.Seats = seats;
+            screening.Price.Screenings = null;
+            return screening;
         }
     }
 }
