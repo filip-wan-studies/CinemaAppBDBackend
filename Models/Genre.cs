@@ -10,7 +10,7 @@ namespace CinemaAppBackend.Models
             Films = new HashSet<Film>();
         }
 
-        public int Id { get; set; }
+        public ushort Id { get; set; }
         public string Name { get; set; }
 
         public virtual ICollection<Film> Films { get; set; }

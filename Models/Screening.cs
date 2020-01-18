@@ -10,11 +10,11 @@ namespace CinemaAppBackend.Models
             Tickets = new HashSet<Ticket>();
         }
 
-        public int Id { get; set; }
-        public int FilmId { get; set; }
-        public int PriceId { get; set; }
+        public uint Id { get; set; }
+        public uint FilmId { get; set; }
+        public byte PriceId { get; set; }
         public DateTime ScreeningDate { get; set; }
-        public int RoomId { get; set; }
+        public byte RoomId { get; set; }
 
         public virtual Film Film { get; set; }
         public virtual Price Price { get; set; }

@@ -10,9 +10,9 @@ namespace CinemaAppBackend.Models
             Screenings = new HashSet<Screening>();
         }
 
-        public int Id { get; set; }
+        public uint Id { get; set; }
         public string Title { get; set; }
-        public int GenreId { get; set; }
+        public ushort GenreId { get; set; }
         public string ImdbId { get; set; }
 
         public virtual Genre Genre { get; set; }

@@ -44,7 +44,7 @@ namespace CinemaAppBackend.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromHeader] string email, [FromHeader] int screeningId, [FromHeader] int seatId )
+        public IActionResult Post([FromHeader] string email, [FromHeader] uint screeningId, [FromHeader] ushort seatId )
         {
             if (!ModelState.IsValid)
             {

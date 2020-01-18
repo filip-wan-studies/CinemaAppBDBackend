@@ -10,7 +10,7 @@ namespace CinemaAppBackend.Models
             Reservations = new HashSet<Reservation>();
         }
 
-        public int Id { get; set; }
+        public uint Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public decimal? PhoneNumber { get; set; }
