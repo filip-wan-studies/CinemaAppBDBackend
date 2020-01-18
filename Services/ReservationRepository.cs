@@ -27,17 +27,24 @@ namespace CinemaAppBackend.Services
 
         public List<Reservation> GetReservationsByEmail(string email)
         {
-            var clients = _context.Reservations.Where(r => r.Email == email || r.Client.Email == email).Include("Client").ToList();
-            clients.ForEach(c => c.Client.Reservations = null);
+            var clients = _context.Reservations.Where(r => r.Email == email || r.Client.Email == email).Include("Client").Include("Ticket").ToList();
+            clients.ForEach(c =>
+            {
+                c.Client.Reservations = null;
+                c.Ticket.Reservations = null;
+            });
             return clients;
         }
 
         public Reservation PostReservation(string email, int screeningId, int seatId)
         {
             var ticket = new Ticket{ScreeningId = screeningId, SeatId = seatId};
-            var reservation = new Reservation {Email = email, SubmissionDate = DateTime.Now, Ticket = ticket};
+            var reservation = new Reservation {Email = email, SubmissionDate = DateTime.Now, Ticket = ticket, Client = null};
+            _context.Tickets.Add(ticket);
             _context.Reservations.Add(reservation);
-            return _context.Reservations.FirstOrDefault(r => reservation.Email == r.Email);
+            _context.SaveChanges();
+            reservation.Ticket.Reservations = null;
+            return reservation;
         }
 
         public Reservation PutReservation(int id)

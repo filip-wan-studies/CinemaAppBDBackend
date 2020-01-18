@@ -22,23 +22,38 @@ namespace CinemaAppBackend.Controllers
         }
 
         [HttpGet("{email}")]
-        public IEnumerable<Reservation> GetByEmail([FromRoute] string email)
+        public IActionResult GetByEmail([FromRoute] string email)
         {
-            return _repository.GetReservationsByEmail(email);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(_repository.GetReservationsByEmail(email));
         }
 
         [HttpGet("{id:int}")]
-        public Reservation GetById([FromRoute] int id)
+        public IActionResult GetById([FromRoute] int id)
         {
-            return _repository.GetReservationById(id);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(_repository.GetReservationById(id));
         }
 
         [HttpPost]
-        public Reservation Post([FromBody] Reservation reservation)
+        public IActionResult Post([FromHeader] string email, [FromHeader] int screeningId, [FromHeader] int seatId )
         {
-            if (reservation.Email == null || reservation.Ticket == null || reservation.Ticket.ScreeningId == 0 ||
-                reservation.Ticket.SeatId == 0) return null;
-            return _repository.PostReservation(reservation.Email, reservation.Ticket.ScreeningId, reservation.Ticket.SeatId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var response = _repository.PostReservation(email, screeningId, seatId);
+            if (response == null) return BadRequest();
+            return Ok(response);
         }
     }
 }

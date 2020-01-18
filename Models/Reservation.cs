@@ -11,7 +11,7 @@ namespace CinemaAppBackend.Models
         public int? ClientId { get; set; }
         public string Email { get; set; }
 
-        public virtual Client Client { get; set; }
+        public virtual Client Client { get; set; } = new Client();
         public virtual Ticket Ticket { get; set; }
     }
 }
