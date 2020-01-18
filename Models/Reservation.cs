@@ -7,7 +7,6 @@ namespace CinemaAppBackend.Models
     {
         public uint Id { get; set; }
         public uint TicketId { get; set; }
-        public DateTime? IssuedDate { get; set; }
         public DateTime SubmissionDate { get; set; }
         public uint? ClientId { get; set; }
         public string Email { get; set; }

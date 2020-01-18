@@ -8,7 +8,6 @@ namespace CinemaAppBackend.Models
         public Price()
         {
             Screenings = new HashSet<Screening>();
-            Tickets = new HashSet<Ticket>();
         }
 
         public byte Id { get; set; }
@@ -16,6 +15,5 @@ namespace CinemaAppBackend.Models
         public sbyte Ammount { get; set; }
 
         public virtual ICollection<Screening> Screenings { get; set; }
-        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

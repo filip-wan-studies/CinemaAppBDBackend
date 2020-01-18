@@ -11,5 +11,6 @@ namespace CinemaAppBackend.Models
         public decimal? PhoneNumber { get; set; }
         public string Email { get; set; }
         public int Salary { get; set; }
+        public string Secret { get; set; }
     }
 }

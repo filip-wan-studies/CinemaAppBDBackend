@@ -25,8 +25,9 @@ namespace CinemaAppBackend.Models
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<Screening> Screenings { get; set; }
+        public virtual DbSet<Seat> Seats { get; set; }
         public virtual DbSet<Ticket> Tickets { get; set; }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Admin>(entity =>
@@ -43,7 +44,6 @@ namespace CinemaAppBackend.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("name")
                     .HasColumnType("varchar(40)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -51,6 +51,12 @@ namespace CinemaAppBackend.Models
                 entity.Property(e => e.PhoneNumber).HasColumnType("decimal(11,0)");
 
                 entity.Property(e => e.Salary).HasColumnType("mediumint(9)");
+
+                entity.Property(e => e.Secret)
+                    .IsRequired()
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_0900_ai_ci");
 
                 entity.Property(e => e.Surname)
                     .IsRequired()
@@ -72,7 +78,6 @@ namespace CinemaAppBackend.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("name")
                     .HasColumnType("varchar(40)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -104,7 +109,6 @@ namespace CinemaAppBackend.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("name")
                     .HasColumnType("varchar(20)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -124,7 +128,6 @@ namespace CinemaAppBackend.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("name")
                     .HasColumnType("varchar(40)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -187,7 +190,6 @@ namespace CinemaAppBackend.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("name")
                     .HasColumnType("varchar(20)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -205,7 +207,6 @@ namespace CinemaAppBackend.Models
 
                 entity.Property(e => e.Name)
                     .IsRequired()
-                    .HasColumnName("name")
                     .HasColumnType("varchar(20)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -230,8 +231,6 @@ namespace CinemaAppBackend.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
-                entity.Property(e => e.IssuedDate).HasColumnType("datetime");
-
                 entity.Property(e => e.SubmissionDate).HasColumnType("datetime");
 
                 entity.Property(e => e.TicketId).HasColumnType("int(10) unsigned");
@@ -255,7 +254,6 @@ namespace CinemaAppBackend.Models
                 entity.Property(e => e.Id).HasColumnType("tinyint(3) unsigned");
 
                 entity.Property(e => e.Name)
-                    .HasColumnName("name")
                     .HasColumnType("varchar(20)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -273,11 +271,16 @@ namespace CinemaAppBackend.Models
                 entity.HasIndex(e => e.PriceId)
                     .HasName("PriceId");
 
+                entity.HasIndex(e => e.RoomId)
+                    .HasName("RoomId");
+
                 entity.Property(e => e.Id).HasColumnType("int(10) unsigned");
 
                 entity.Property(e => e.FilmId).HasColumnType("int(10) unsigned");
 
                 entity.Property(e => e.PriceId).HasColumnType("tinyint(3) unsigned");
+
+                entity.Property(e => e.RoomId).HasColumnType("tinyint(3) unsigned");
 
                 entity.Property(e => e.ScreeningDate).HasColumnType("datetime");
 
@@ -292,6 +295,33 @@ namespace CinemaAppBackend.Models
                     .HasForeignKey(d => d.PriceId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("screenings_ibfk_2");
+
+                entity.HasOne(d => d.Room)
+                    .WithMany(p => p.Screenings)
+                    .HasForeignKey(d => d.RoomId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("screenings_ibfk_3");
+            });
+
+            modelBuilder.Entity<Seat>(entity =>
+            {
+                entity.ToTable("seats");
+
+                entity.HasIndex(e => e.RoomId)
+                    .HasName("RoomId");
+
+                entity.Property(e => e.Id).HasColumnType("smallint(5) unsigned");
+
+                entity.Property(e => e.RoomId).HasColumnType("tinyint(3) unsigned");
+
+                entity.Property(e => e.Rowing).HasColumnType("tinyint(4)");
+
+                entity.Property(e => e.SeatNumber).HasColumnType("tinyint(4)");
+
+                entity.HasOne(d => d.Room)
+                    .WithMany(p => p.Seats)
+                    .HasForeignKey(d => d.RoomId)
+                    .HasConstraintName("seats_ibfk_1");
             });
 
             modelBuilder.Entity<Ticket>(entity =>
@@ -304,14 +334,11 @@ namespace CinemaAppBackend.Models
                 entity.HasIndex(e => e.EmployeeId)
                     .HasName("EmployeeId");
 
-                entity.HasIndex(e => e.PriceId)
-                    .HasName("PriceId");
-
-                entity.HasIndex(e => e.RoomId)
-                    .HasName("RoomId");
-
                 entity.HasIndex(e => e.ScreeningId)
                     .HasName("ScreeningId");
+
+                entity.HasIndex(e => e.SeatId)
+                    .HasName("SeatId");
 
                 entity.Property(e => e.Id).HasColumnType("int(10) unsigned");
 
@@ -319,43 +346,33 @@ namespace CinemaAppBackend.Models
 
                 entity.Property(e => e.EmployeeId).HasColumnType("smallint(5) unsigned");
 
-                entity.Property(e => e.PriceId).HasColumnType("tinyint(3) unsigned");
-
-                entity.Property(e => e.RoomId).HasColumnType("tinyint(3) unsigned");
+                entity.Property(e => e.IssuedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ScreeningId).HasColumnType("int(10) unsigned");
 
-                entity.Property(e => e.SeatNumber).HasColumnType("tinyint(4)");
+                entity.Property(e => e.SeatId).HasColumnType("smallint(5) unsigned");
 
                 entity.HasOne(d => d.Discount)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.DiscountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("tickets_ibfk_3");
+                    .HasConstraintName("tickets_ibfk_1");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.EmployeeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("tickets_ibfk_4");
-
-                entity.HasOne(d => d.Price)
-                    .WithMany(p => p.Tickets)
-                    .HasForeignKey(d => d.PriceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tickets_ibfk_2");
-
-                entity.HasOne(d => d.Room)
-                    .WithMany(p => p.Tickets)
-                    .HasForeignKey(d => d.RoomId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("tickets_ibfk_1");
 
                 entity.HasOne(d => d.Screening)
                     .WithMany(p => p.Tickets)
                     .HasForeignKey(d => d.ScreeningId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("tickets_ibfk_5");
+                    .HasConstraintName("tickets_ibfk_3");
+
+                entity.HasOne(d => d.Seat)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.SeatId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("tickets_ibfk_4");
             });
 
             OnModelCreatingPartial(modelBuilder);
