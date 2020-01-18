@@ -35,7 +35,7 @@ namespace CinemaAppBackend
                     builder => builder.WithOrigins("http://localhost:3000"));
             });
             services.AddControllers();
-            services.AddDbContext<bazdanContext>(opts => opts.UseMySql(Configuration["ConnectionStrings:CinemaAppDatabase"]));
+            services.AddDbContext<dbContext>(opts => opts.UseMySql(Configuration["ConnectionStrings:CinemaAppDatabase"]));
             services.AddScoped<IFilmRepository, FilmRepository>();
             services.AddScoped<IPriceRepository, PriceRepository>();
             services.AddScoped<IScreeningRepository, ScreeningRepository>();

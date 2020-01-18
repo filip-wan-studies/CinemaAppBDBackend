@@ -10,7 +10,7 @@ namespace CinemaAppBackend.Models
             Tickets = new HashSet<Ticket>();
         }
 
-        public byte IdDiscount { get; set; }
+        public byte Id { get; set; }
         public string Name { get; set; }
         public short Ammount { get; set; }
 

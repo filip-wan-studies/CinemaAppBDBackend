@@ -11,16 +11,16 @@ namespace CinemaAppBackend.Services
 {
     public class ReservationRepository : IReservationRepository
     {
-        private readonly bazdanContext _context;
+        private readonly dbContext _context;
 
-        public ReservationRepository(bazdanContext context)
+        public ReservationRepository(dbContext context)
         {
             _context = context;
         }
 
         public Reservation GetReservationById(int id)
         {
-            return _context.Reservations.SingleOrDefault(r => r.IdReservation == id);
+            return _context.Reservations.SingleOrDefault(r => r.Id == id);
         }
 
         public List<Reservation> GetReservationsByEmail(string email)
@@ -31,13 +31,13 @@ namespace CinemaAppBackend.Services
         public Reservation PostReservation(string email)
         {
             var t = new Ticket {};
-            var reservation = new Reservation {Email = email, DateSubmission = DateTime.Now};
+            var reservation = new Reservation {Email = email, SubmissionDate = DateTime.Now};
             return _context.Reservations.Add(reservation).Entity;
         }
 
         public Reservation PutReservation(int id)
         {
-            var reservation = _context.Reservations.SingleOrDefault(r => r.IdReservation == id);
+            var reservation = _context.Reservations.SingleOrDefault(r => r.Id == id);
             return reservation;
         }
     }

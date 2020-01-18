@@ -9,9 +9,9 @@ namespace CinemaAppBackend.Services
 {
     public class ScreeningRepository : IScreeningRepository
     {
-        private readonly bazdanContext _context;
+        private readonly dbContext _context;
 
-        public ScreeningRepository(bazdanContext context)
+        public ScreeningRepository(dbContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace CinemaAppBackend.Services
 
         public Screening GetScreening(int id)
         {
-            return _context.Screenings.First(s => s.IdScreening == id);
+            return _context.Screenings.First(s => s.Id == id);
         }
     }
 }

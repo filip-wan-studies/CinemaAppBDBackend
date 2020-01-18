@@ -9,9 +9,9 @@ namespace CinemaAppBackend.Services
 {
     public class PriceRepository : IPriceRepository
     {
-        private readonly bazdanContext _context;
+        private readonly dbContext _context;
 
-        public PriceRepository(bazdanContext context)
+        public PriceRepository(dbContext context)
         {
             _context = context;
         }

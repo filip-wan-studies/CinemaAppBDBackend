@@ -10,9 +10,9 @@ namespace CinemaAppBackend.Services
 {
     public class FilmRepository : IFilmRepository
     {
-        private readonly bazdanContext _context;
+        private readonly dbContext _context;
 
-        public FilmRepository(bazdanContext context)
+        public FilmRepository(dbContext context)
         {
             _context = context;
         }
@@ -20,17 +20,17 @@ namespace CinemaAppBackend.Services
         public IEnumerable<Film> GetFilms()
         {
             return (
-                    from f in _context.Films join g in _context.Genres on f.IdGenre equals g.IdGenre 
-                    select new Film { GenreNavigation = g, IdFilm = f.IdFilm, IdGenre = f.IdGenre, IdImbd = f.IdImbd, Screenings = f.Screenings, Title = f.Title }
+                    from f in _context.Films join g in _context.Genres on f.Genre.Id equals g.Id 
+                    select new Film { Genre = g, Id = f.Id, ImdbId = f.ImdbId, Screenings = f.Screenings, Title = f.Title }
                 ).ToList();
         }
 
         public Film GetFilm(int id)
         {
             return (
-                    from f in _context.Films join g in _context.Genres on f.IdGenre equals g.IdGenre 
-                    where f.IdFilm == id 
-                    select new Film{GenreNavigation = g, IdFilm = f.IdFilm, IdGenre = f.IdGenre, IdImbd = f.IdImbd, Screenings = f.Screenings, Title = f.Title}
+                    from f in _context.Films join g in _context.Genres on f.Genre.Id equals g.Id 
+                    where f.Id == id 
+                    select new Film{Genre = g, Id = f.Id, ImdbId = f.ImdbId, Screenings = f.Screenings, Title = f.Title}
                 ).FirstOrDefault();
         }
     }
