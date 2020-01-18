@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Genres (Id smallint unsigned not null auto_increment,
 CREATE TABLE IF NOT EXISTS Discounts (Id tinyint unsigned not null auto_increment, Name varchar(20) not null, Ammount smallint not null check(Ammount>=0) check(Ammount<=100), constraint primary key (Id));
 CREATE TABLE IF NOT EXISTS Prices (Id tinyint unsigned not null auto_increment,  Name varchar(20) not null, Ammount tinyint not null, constraint primary key (Id));
 CREATE TABLE IF NOT EXISTS Rooms (Id tinyint unsigned not null, Name varchar(20), SeatCount smallint not null, constraint primary key(Id));
-CREATE TABLE IF NOT EXISTS Seats (Id smallint unsigned not null auto_increment, RoomId tinyint unsigned, Rowing tinyint not null, SeatNumber tinyint not null, constraint primary key(Id), constraint foreign key(RoomId) references Rooms(Id)); 
+CREATE TABLE IF NOT EXISTS Seats (Id smallint unsigned not null auto_increment, RoomId tinyint unsigned, IsReserved boolean not null default 0, RowNumber tinyint not null, SeatNumber tinyint not null, constraint primary key(Id), constraint foreign key(RoomId) references Rooms(Id)); 
 CREATE TABLE IF NOT EXISTS Employees(Id smallint unsigned not null auto_increment, Name varchar(40) not null, Surname varchar(40) not null, PhoneNumber decimal(11,0), Email varchar(50) not null, Salary mediumint not null check(Salary>0), Secret varchar(50) not null, constraint primary key(Id));
 CREATE TABLE IF NOT EXISTS Films (Id int unsigned not null auto_increment, Title varchar(200) not null, GenreId smallint unsigned not null, ImdbId varchar(100) unique, constraint primary key(Id), constraint foreign key(GenreId) references Genres(Id));
 CREATE TABLE IF NOT EXISTS Screenings(Id int unsigned not null auto_increment, FilmId int unsigned not null, PriceId tinyint unsigned not null, ScreeningDate datetime not null, RoomId tinyint unsigned not null, constraint primary key(Id), constraint foreign key(FilmId) references Films(Id), constraint foreign key(PriceId) references Prices(Id), constraint foreign key(RoomId) references Rooms(Id));
@@ -63,8 +63,9 @@ INSERT INTO Rooms (Id, name, SeatCount) VALUES (8, 'Sala 8', 80);
 # Administratorzy 
 INSERT INTO Admins (Id, Name, Surname, PhoneNumber, Email, Salary, Secret) VALUES (null, 'Zbigniew', 'Skis', 48666444444, 'zbig.zgiz@pwr.edu.pl', 12000, 'bestpassword');
 
-# Pracownicy
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/siedzenia.csv' INTO TABLE Seats FIELDS TERMINATED BY ';';
+# Siedzenia
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/siedzenia.csv' INTO TABLE Seats FIELDS TERMINATED BY ';' 
+(Id, RoomId, RowNumber, SeatNumber);
 
 # Pracownicy
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/pracownik.csv' INTO TABLE Employees FIELDS TERMINATED BY ';';
