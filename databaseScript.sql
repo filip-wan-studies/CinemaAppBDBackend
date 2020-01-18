@@ -2,18 +2,18 @@
 DROP DATABASE bazdan;
 CREATE DATABASE IF NOT EXISTS bazdan;
 USE bazdan;
-CREATE TABLE IF NOT EXISTS Genres (Id smallint unsigned not null auto_increment, name varchar(20) not null, constraint primary key (Id));
-CREATE TABLE IF NOT EXISTS Discounts (Id tinyint unsigned not null auto_increment, name varchar(20) not null, Ammount smallint not null check(Ammount>=0) check(Ammount<=100), constraint primary key (Id));
-CREATE TABLE IF NOT EXISTS Prices (Id tinyint unsigned not null auto_increment,  name varchar(20) not null, Ammount tinyint not null, constraint primary key (Id));
-CREATE TABLE IF NOT EXISTS Rooms (Id tinyint unsigned not null, name varchar(20), SeatCount smallint not null, constraint primary key(Id));
-CREATE TABLE IF NOT EXISTS Sits (Id smallint unsigned not null auto_increment, RoomId tinyint unsigned, Rowing tinyint not null, SeatNumber tinyint not null, constraint primary key(Id), constraint foreign key(RoomId) references Rooms(Id)); 
-CREATE TABLE IF NOT EXISTS Employees(Id smallint unsigned not null auto_increment, name varchar(40) not null, Surname varchar(40) not null, PhoneNumber decimal(11,0), Email varchar(50) not null, Salary mediumint not null check(Salary>0), Secret varchar(50) not null, constraint primary key(Id));
+CREATE TABLE IF NOT EXISTS Genres (Id smallint unsigned not null auto_increment, Name varchar(20) not null, constraint primary key (Id));
+CREATE TABLE IF NOT EXISTS Discounts (Id tinyint unsigned not null auto_increment, Name varchar(20) not null, Ammount smallint not null check(Ammount>=0) check(Ammount<=100), constraint primary key (Id));
+CREATE TABLE IF NOT EXISTS Prices (Id tinyint unsigned not null auto_increment,  Name varchar(20) not null, Ammount tinyint not null, constraint primary key (Id));
+CREATE TABLE IF NOT EXISTS Rooms (Id tinyint unsigned not null, Name varchar(20), SeatCount smallint not null, constraint primary key(Id));
+CREATE TABLE IF NOT EXISTS Seats (Id smallint unsigned not null auto_increment, RoomId tinyint unsigned, Rowing tinyint not null, SeatNumber tinyint not null, constraint primary key(Id), constraint foreign key(RoomId) references Rooms(Id)); 
+CREATE TABLE IF NOT EXISTS Employees(Id smallint unsigned not null auto_increment, Name varchar(40) not null, Surname varchar(40) not null, PhoneNumber decimal(11,0), Email varchar(50) not null, Salary mediumint not null check(Salary>0), Secret varchar(50) not null, constraint primary key(Id));
 CREATE TABLE IF NOT EXISTS Films (Id int unsigned not null auto_increment, Title varchar(200) not null, GenreId smallint unsigned not null, ImdbId varchar(100) unique, constraint primary key(Id), constraint foreign key(GenreId) references Genres(Id));
 CREATE TABLE IF NOT EXISTS Screenings(Id int unsigned not null auto_increment, FilmId int unsigned not null, PriceId tinyint unsigned not null, ScreeningDate datetime not null, RoomId tinyint unsigned not null, constraint primary key(Id), constraint foreign key(FilmId) references Films(Id), constraint foreign key(PriceId) references Prices(Id), constraint foreign key(RoomId) references Rooms(Id));
-CREATE TABLE IF NOT EXISTS Clients (Id mediumint unsigned not null auto_increment, name varchar(40) not null, Surname varchar(40) not null, PhoneNumber decimal(11,0), Email varchar(50), Secret varchar(50) not null, constraint primary key(Id));
-CREATE TABLE IF NOT EXISTS Tickets (Id int unsigned not null auto_increment, SitId smallint unsigned not null, DiscountId  tinyint unsigned, EmployeeId smallint unsigned, ScreeningId int unsigned not null, constraint primary key(Id), constraint foreign key(DiscountId) references Discounts(Id), constraint foreign key(EmployeeId) references Employees(Id), constraint foreign key(ScreeningId) references Screenings(Id), constraint foreign key(SitId) references Sits(Id));
-CREATE TABLE IF NOT EXISTS Reservations(Id int unsigned not null auto_increment, TicketId int unsigned not null, IssuedDate datetime, SubmissionDate datetime not null, ClientId mediumint unsigned, Email varchar(50), constraint primary key(Id), constraint foreign key(ClientId) references Clients(Id), constraint foreign key(TicketId) references Tickets(Id), constraint check (IssuedDate>SubmissionDate));
-CREATE TABLE IF NOT EXISTS Admins(Id smallint unsigned not null auto_increment, name varchar(40) not null, Surname varchar(40) not null, PhoneNumber decimal(11,0), Email varchar(50) not null, Salary mediumint not null check(Salary>0), Secret varchar(50) not null, constraint primary key(Id));
+CREATE TABLE IF NOT EXISTS Clients (Id mediumint unsigned not null auto_increment, Name varchar(40) not null, Surname varchar(40) not null, PhoneNumber decimal(11,0), Email varchar(50), Secret varchar(50) not null, constraint primary key(Id));
+CREATE TABLE IF NOT EXISTS Tickets (Id int unsigned not null auto_increment, IssuedDate datetime, SeatId smallint unsigned not null, DiscountId  tinyint unsigned, EmployeeId smallint unsigned, ScreeningId int unsigned not null, constraint primary key(Id), constraint foreign key(DiscountId) references Discounts(Id), constraint foreign key(EmployeeId) references Employees(Id), constraint foreign key(ScreeningId) references Screenings(Id), constraint foreign key(SeatId) references Seats(Id));
+CREATE TABLE IF NOT EXISTS Reservations(Id int unsigned not null auto_increment, TicketId int unsigned not null, SubmissionDate datetime not null, ClientId mediumint unsigned, Email varchar(50), constraint primary key(Id), constraint foreign key(ClientId) references Clients(Id), constraint foreign key(TicketId) references Tickets(Id));
+CREATE TABLE IF NOT EXISTS Admins(Id smallint unsigned not null auto_increment, Name varchar(40) not null, Surname varchar(40) not null, PhoneNumber decimal(11,0), Email varchar(50) not null, Salary mediumint not null check(Salary>0), Secret varchar(50) not null, constraint primary key(Id));
 
 /*Dodanie danych*/
 # Zniżki
@@ -64,7 +64,7 @@ INSERT INTO Rooms (Id, name, SeatCount) VALUES (8, 'Sala 8', 80);
 INSERT INTO Admins (Id, Name, Surname, PhoneNumber, Email, Salary, Secret) VALUES (null, 'Zbigniew', 'Skis', 48666444444, 'zbig.zgiz@pwr.edu.pl', 12000, 'bestpassword');
 
 # Pracownicy
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/siedzenia.csv' INTO TABLE Sits FIELDS TERMINATED BY ';';
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/siedzenia.csv' INTO TABLE Seats FIELDS TERMINATED BY ';';
 
 # Pracownicy
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/pracownik.csv' INTO TABLE Employees FIELDS TERMINATED BY ';';
@@ -76,12 +76,13 @@ LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/filmy.csv' INTO 
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/seans.csv' INTO TABLE Screenings FIELDS TERMINATED BY ';';
 
 # Tickets
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/bilet.csv' INTO TABLE Tickets FIELDS TERMINATED BY ';';
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/bilet.csv' INTO TABLE Tickets FIELDS TERMINATED BY ';' 
+(Id, SeatId, DiscountId, EmployeeId, ScreeningId) ;
 
 # Klienci
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/klienci.csv' INTO TABLE Clients FIELDS TERMINATED BY ';';
 
 # Reservations
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/rezerwacje.csv' INTO TABLE Reservations FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n'
-(Id, TicketId, IssuedDate, SubmissionDate, ClientId, @vEmail)
+(Id, TicketId, @dummy, SubmissionDate, ClientId, @vEmail)
 SET Email = nullif(@vemial, '');
