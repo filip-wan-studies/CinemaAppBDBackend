@@ -32,7 +32,12 @@ namespace CinemaAppBackend
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowOrigin",
-                    builder => builder.WithOrigins("http://localhost:3000"));
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
             });
             services.AddControllers();
             services.AddDbContext<dbContext>(opts => opts.UseMySql(Configuration["ConnectionStrings:CinemaAppDatabase"]));
@@ -54,8 +59,7 @@ namespace CinemaAppBackend
             
             app.UseRouting();
 
-            app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:3000"));
+            app.UseCors("AllowOrigin");
             //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

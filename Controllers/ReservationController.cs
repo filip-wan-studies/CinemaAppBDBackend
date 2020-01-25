@@ -44,14 +44,14 @@ namespace CinemaAppBackend.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromHeader] string email, [FromHeader] uint screeningId, [FromHeader] ushort seatId )
+        public IActionResult Post([FromBody] Reservation reservation)//, [FromBody] uint screeningId, [FromBody] ushort seatId )
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var response = _repository.PostReservation(email, screeningId, seatId);
+            var response = _repository.PostReservation(reservation.Email, reservation.Ticket.ScreeningId, reservation.Ticket.SeatId);
             if (response == null) return BadRequest();
             return Ok(response);
         }
