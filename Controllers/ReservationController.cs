@@ -50,7 +50,7 @@ namespace CinemaAppBackend.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            
             var response = _repository.PostReservation(reservation.Email, reservation.Ticket.ScreeningId, reservation.Ticket.ScreenSeatId);
             if (response == null) return BadRequest();
             return Ok(response);
