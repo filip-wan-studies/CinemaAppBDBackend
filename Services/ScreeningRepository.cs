@@ -28,14 +28,16 @@ namespace CinemaAppBackend.Services
         public Screening GetScreening(int id)
         {
             // TODO changed
-            var screening = _context.Screenings.AsNoTracking().Include("Film").Include("Screenseats").Include("Price").First(s => s.Id == id);
+            var screening = _context.Screenings.AsNoTracking().Include("Film").Include("Screenseats.Seat").Include("Price").First(s => s.Id == id);
             screening.Film.Screenings = null;
-            //var seats = screening.Screenseats.ToList();
-            //seats.ForEach(s =>
-            //{
-            //    s.Tickets = null;
-            //});
-            //screening.Screenseats = seats;
+            var seats = screening.Screenseats.ToList();
+            seats.ForEach(s =>
+            {
+                s.Tickets = null;
+                s.Screening = null;
+                s.Seat.Screenseats = null;
+            });
+            screening.Screenseats = seats;
             screening.Price.Screenings = null;
             return screening;
         }
