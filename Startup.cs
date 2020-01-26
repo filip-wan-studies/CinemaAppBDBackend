@@ -45,6 +45,7 @@ namespace CinemaAppBackend
             services.AddScoped<IPriceRepository, PriceRepository>();
             services.AddScoped<IScreeningRepository, ScreeningRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
