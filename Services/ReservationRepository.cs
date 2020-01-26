@@ -38,17 +38,18 @@ namespace CinemaAppBackend.Services
             return reservations;
         }
 
-        public Reservation PostReservation(string email, uint screeningId, ushort seatId)
+        public Reservation PostReservation(string email, uint screeningId, uint screenSeatId)
         {
-            var seat = _context.Seats.Single(s => s.Id == seatId);
-            if (seat.IsReserved == true) return null;
-            seat.IsReserved = true;
-            var ticket = new Ticket{ScreeningId = screeningId, SeatId = seatId};
+            // TODO changed
+            var screenSeat = _context.Screenseats.Single(s => s.Id == screenSeatId);
+            if (screenSeat.IsReserved) return null;
+            screenSeat.IsReserved = true;
+            var ticket = new Ticket{ScreeningId = screeningId, ScreenSeatId = screenSeatId };
             var reservation = new Reservation {Email = email, SubmissionDate = DateTime.Now, Ticket = ticket, Client = null};
             _context.Reservations.Add(reservation);
             _context.SaveChanges();
             reservation.Ticket.Reservations = null;
-            reservation.Ticket.Seat.Tickets = null;
+            reservation.Ticket.ScreenSeat.Tickets = null;
             return reservation;
         }
 
