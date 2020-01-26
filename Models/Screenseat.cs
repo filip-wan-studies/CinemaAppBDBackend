@@ -7,15 +7,16 @@ namespace CinemaAppBackend.Models
     {
         public Screenseat()
         {
-            Seats = new HashSet<Seat>();
+            Tickets = new HashSet<Ticket>();
         }
 
         public uint Id { get; set; }
-        public byte? RoomId { get; set; }
+        public bool IsReserved { get; set; }
+        public ushort? SeatId { get; set; }
         public uint? ScreeningId { get; set; }
 
-        public virtual Room Room { get; set; }
         public virtual Screening Screening { get; set; }
-        public virtual ICollection<Seat> Seats { get; set; }
+        public virtual Seat Seat { get; set; }
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }
