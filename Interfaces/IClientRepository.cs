@@ -9,6 +9,7 @@ namespace CinemaAppBackend.Interfaces
     public interface IClientRepository
     {
         IEnumerable<Client> GetClients();
+        Client Authenticate(string email, string password);
         Client GetClient(int id);
         Client GetClient(string email);
         Client PostClient(Client client);

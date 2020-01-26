@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using CinemaAppBackend.Interfaces;
 using CinemaAppBackend.Models;
 using CinemaAppBackend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaAppBackend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ClientController : ControllerBase
@@ -22,23 +24,36 @@ namespace CinemaAppBackend.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Client> Get()
+        public IActionResult Get()
         {
-            return _repository.GetClients();
+            return Ok(_repository.GetClients());
         }
 
         [HttpGet("{id:int}")]
-        public Client GetById([FromRoute] int id)
+        public IActionResult GetById([FromRoute] int id)
         {
-            return _repository.GetClient(id);
+            return Ok(_repository.GetClient(id));
         }
 
         [HttpGet("{email}")]
-        public Client GetById([FromRoute] string email)
+        public IActionResult GetById([FromRoute] string email)
         {
-            return _repository.GetClient(email);
+            return Ok(_repository.GetClient(email));
         }
 
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate([FromBody]AuthenticateModel model)
+        {
+            var client = _repository.Authenticate(model.Email, model.Secret);
+
+            if (client == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(client);
+        }
+
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Post([FromBody] Client client)
         {
@@ -49,6 +64,7 @@ namespace CinemaAppBackend.Controllers
 
             var response = _repository.PostClient(client);
             if (response == null) return BadRequest();
+
             return Ok(response);
         }
     }
