@@ -29,14 +29,14 @@ namespace CinemaAppBackend.Services
         {
             var screening = _context.Screenings.AsNoTracking().Include("Film").Include("Room.Seats").Include("Price").First(s => s.Id == id);
             screening.Film.Screenings = null;
-            screening.Room.Screenings = null;
-            var seats = screening.Room.Seats.ToList();
+            screening.Screenseats.Screenings = null;
+            var seats = screening.Screenseats.Seats.ToList();
             seats.ForEach(s =>
             {
                 s.Tickets = null;
                 s.Room = null;
             });
-            screening.Room.Seats = seats;
+            screening.Screenseats.Seats = seats;
             screening.Price.Screenings = null;
             return screening;
         }
