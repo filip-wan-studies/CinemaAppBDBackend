@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS Films (Id int unsigned not null auto_increment, Title
 CREATE TABLE IF NOT EXISTS Screenings(Id int unsigned not null auto_increment, FilmId int unsigned not null, PriceId tinyint unsigned not null, ScreeningDate datetime not null, constraint primary key(Id), constraint foreign key(FilmId) references Films(Id), constraint foreign key(PriceId) references Prices(Id));
 CREATE TABLE IF NOT EXISTS Clients (Id mediumint unsigned not null auto_increment, Name varchar(40) not null, Surname varchar(40) not null, PhoneNumber decimal(11,0), Email varchar(50), Secret varchar(50) not null, constraint primary key(Id));
 CREATE TABLE IF NOT EXISTS Admins(Id smallint unsigned not null auto_increment, Name varchar(40) not null, Surname varchar(40) not null, PhoneNumber decimal(11,0), Email varchar(50) not null, Salary mediumint not null check(Salary>0), Secret varchar(50) not null, constraint primary key(Id));
-CREATE TABLE IF NOT EXISTS ScreenSeat(Id int unsigned not null auto_increment, RoomId tinyint unsigned, ScreeningId int unsigned, constraint primary key(Id), constraint foreign key(RoomId) references Rooms(Id), constraint foreign key(ScreeningId) references Screenings(Id));
-CREATE TABLE IF NOT EXISTS Seats (Id smallint unsigned not null auto_increment, IsReserved boolean not null default 0, RowNumber tinyint not null, SeatNumber tinyint not null, ScreenSeatId int unsigned, constraint primary key(Id), constraint foreign key(ScreenSeatId) references ScreenSeat(Id)); 
-CREATE TABLE IF NOT EXISTS Tickets (Id int unsigned not null auto_increment, SeatId smallint unsigned not null, DiscountId  tinyint unsigned, EmployeeId smallint unsigned, ScreeningId int unsigned not null, IssuedDate datetime, constraint primary key(Id), constraint foreign key(DiscountId) references Discounts(Id), constraint foreign key(EmployeeId) references Employees(Id), constraint foreign key(ScreeningId) references Screenings(Id), constraint foreign key(SeatId) references Seats(Id));
+CREATE TABLE IF NOT EXISTS Seats (Id smallint unsigned not null auto_increment, RowNumber tinyint not null, SeatNumber tinyint not null, RoomId tinyint unsigned, constraint primary key(Id), constraint foreign key(RoomId) references Rooms(Id)); 
+CREATE TABLE IF NOT EXISTS ScreenSeats(Id int unsigned not null auto_increment, IsReserved boolean not null default 0, SeatId smallint unsigned, ScreeningId int unsigned, constraint primary key(Id), constraint foreign key(SeatId) references Seats(Id), constraint foreign key(ScreeningId) references Screenings(Id));
+CREATE TABLE IF NOT EXISTS Tickets (Id int unsigned not null auto_increment, ScreenSeatId int unsigned not null, DiscountId  tinyint unsigned, EmployeeId smallint unsigned, ScreeningId int unsigned not null, IssuedDate datetime, constraint primary key(Id), constraint foreign key(DiscountId) references Discounts(Id), constraint foreign key(EmployeeId) references Employees(Id), constraint foreign key(ScreeningId) references Screenings(Id), constraint foreign key(ScreenSeatId) references ScreenSeats(Id));
 CREATE TABLE IF NOT EXISTS Reservations(Id int unsigned not null auto_increment, TicketId int unsigned not null, SubmissionDate datetime not null, ClientId mediumint unsigned, Email varchar(50), constraint primary key(Id), constraint foreign key(ClientId) references Clients(Id), constraint foreign key(TicketId) references Tickets(Id));
 
 /*Dodanie danych*/
@@ -73,16 +73,16 @@ LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/filmy.csv' INTO 
 # Seanse
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/seans.csv' INTO TABLE Screenings FIELDS TERMINATED BY ';';
 
-# Miejsca do seansów
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/miejsca.csv' INTO TABLE ScreenSeat FIELDS TERMINATED BY ';';
-
 # Siedzenia
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/siedzenia.csv' INTO TABLE Seats FIELDS TERMINATED BY ';' 
-(Id, ScreenSeatId, RowNumber, SeatNumber);
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/siedzenia.csv' INTO TABLE Seats FIELDS TERMINATED BY ';' ;
+
+# Miejsca do seansów
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/miejsca.csv' INTO TABLE ScreenSeats FIELDS TERMINATED BY ';'
+(Id, SeatId, ScreeningId);
 
 # Tickets
-LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/bilet.csv' INTO TABLE Tickets FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n';
-/*(Id, SeatId, DiscountId, EmployeeId, ScreeningId) */;
+LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/bilet.csv' INTO TABLE Tickets FIELDS TERMINATED BY ';' LINES TERMINATED BY '\n'
+(Id, ScreenSeatId, DiscountId, EmployeeId, ScreeningId, IssuedDate);
 
 # Klienci
 LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/klienci.csv' INTO TABLE Clients FIELDS TERMINATED BY ';';
