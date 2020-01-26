@@ -32,5 +32,18 @@ namespace CinemaAppBackend.Controllers
         {
             return _repository.GetFilm(id);
         }
+
+        public IEnumerable<Film> Index(string searchString)
+        {
+            var movies = from m in _repository.GetFilms()
+                         select m;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                movies = movies.Where(s => s.Title.Contains(searchString));
+            }
+
+            return movies;
+        }
     }
 }
