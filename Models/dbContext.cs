@@ -300,23 +300,23 @@ namespace CinemaAppBackend.Models
                 entity.HasIndex(e => e.RoomId)
                     .HasName("RoomId");
 
-                entity.HasIndex(e => e.ScreeningsId)
-                    .HasName("ScreeningsId");
+                entity.HasIndex(e => e.ScreeningId)
+                    .HasName("ScreeningId");
 
                 entity.Property(e => e.Id).HasColumnType("int(10) unsigned");
 
                 entity.Property(e => e.RoomId).HasColumnType("tinyint(3) unsigned");
 
-                entity.Property(e => e.ScreeningsId).HasColumnType("int(10) unsigned");
+                entity.Property(e => e.ScreeningId).HasColumnType("int(10) unsigned");
 
                 entity.HasOne(d => d.Room)
                     .WithMany(p => p.Screenseats)
                     .HasForeignKey(d => d.RoomId)
                     .HasConstraintName("screenseat_ibfk_1");
 
-                entity.HasOne(d => d.Screenings)
+                entity.HasOne(d => d.Screening)
                     .WithMany(p => p.Screenseats)
-                    .HasForeignKey(d => d.ScreeningsId)
+                    .HasForeignKey(d => d.ScreeningId)
                     .HasConstraintName("screenseat_ibfk_2");
             });
 
@@ -354,6 +354,9 @@ namespace CinemaAppBackend.Models
                 entity.HasIndex(e => e.ScreeningId)
                     .HasName("ScreeningId");
 
+                entity.HasIndex(e => e.SeatId)
+                    .HasName("SeatId");
+
                 entity.Property(e => e.Id).HasColumnType("int(10) unsigned");
 
                 entity.Property(e => e.DiscountId).HasColumnType("tinyint(3) unsigned");
@@ -363,6 +366,8 @@ namespace CinemaAppBackend.Models
                 entity.Property(e => e.IssuedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ScreeningId).HasColumnType("int(10) unsigned");
+
+                entity.Property(e => e.SeatId).HasColumnType("smallint(5) unsigned");
 
                 entity.HasOne(d => d.Discount)
                     .WithMany(p => p.Tickets)
@@ -379,6 +384,12 @@ namespace CinemaAppBackend.Models
                     .HasForeignKey(d => d.ScreeningId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("tickets_ibfk_3");
+
+                entity.HasOne(d => d.Seat)
+                    .WithMany(p => p.Tickets)
+                    .HasForeignKey(d => d.SeatId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("tickets_ibfk_4");
             });
 
             OnModelCreatingPartial(modelBuilder);
